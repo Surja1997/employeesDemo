@@ -1,11 +1,14 @@
 package com.dazzler.employees.service;
 
+import com.dazzler.employees.exceptions.ElementNotFoundException;
 import com.dazzler.employees.exceptions.EmptyInputException;
 import com.dazzler.employees.exceptions.ResourceNotFoundException;
 import com.dazzler.employees.model.Employee;
 import com.dazzler.employees.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.NoSuchElementException;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -17,7 +20,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee getEmployeeById(Long employeeId) throws ResourceNotFoundException {
         Employee employee = employeeRepository.findById(employeeId)
-                .orElseThrow(() -> new ResourceNotFoundException("Employee not found with this id ::" + employeeId));
+//                .orElseThrow(() -> new ResourceNotFoundException("Employee not found with this id ::" + employeeId));
+                .orElseThrow(ElementNotFoundException::new);
+//        Employee employee = employeeRepository.findById(employeeId).get();
+
         return employee;
     }
 
